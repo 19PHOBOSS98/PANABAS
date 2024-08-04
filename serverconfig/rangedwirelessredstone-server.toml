@@ -1,0 +1,10 @@
+
+#Balance Settings
+[balance]
+	#Range of transmitter block. How many blocks should the signal travel in each direction?
+	#Range: > 1
+	range_block = 256
+	#Range of tiny transmitter block. How many blocks should the signal travel in each direction?
+	#Range: > 1
+	range_cell = 64
+

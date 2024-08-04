@@ -1,0 +1,24 @@
+
+[SomePeripheralsConfig]
+
+	[SomePeripheralsConfig.Permissions]
+		#No comment
+		#Range: 0 ~ 4
+		VMOD_COMMANDS_PERMISSION_LEVEL = 4
+
+	[SomePeripheralsConfig.Schematics]
+		#No comment
+		#Range: 0 ~ 20000
+		TIMEOUT_TIME = 50
+
+	[SomePeripheralsConfig.ServerToolgunSettings]
+		#No comment
+		#Range: 1.0 ~ 1.7976931348623157E308
+		MAX_RAYCAST_DISTANCE = 100.0
+		#Number of connected ships a player can copy in one request. <=0 for unlimited.
+		#Range: > -2147483648
+		MAX_SHIPS_ALLOWED_TO_COPY = -1
+		#Reload the game for change to take the effect.
+		#Range: 512 ~ 1000000
+		SCHEMATIC_PACKET_PART_SIZE = 1000000
+
