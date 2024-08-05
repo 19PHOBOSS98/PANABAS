@@ -10,7 +10,7 @@
 	"i" initialize hound pack
 ]]--
 
-os.loadAPI("lib/quaternions.lua")
+local quaternion = require "lib.quaternions"
 
 modem = peripheral.find("modem")
 rednet.open("back")
@@ -30,7 +30,7 @@ local DRONE_IDs = {
 	}
 
 local ORBIT_FORMATION = {
-	vector.new(10,10,45),
+	vector.new(-20,10,45),
 
 }
 
@@ -60,7 +60,20 @@ end
 local toggle_run_mode = true
 
 
-local movement_key_tracker = {w=false,a=false,s=false,d=false,space=false,leftShift=false}
+local movement_key_tracker = {
+								w=false,
+								a=false,
+								s=false,
+								d=false,
+								space=false,
+								leftShift=false,}
+local movement_key_tracker = {
+								q=false,
+								e=false,
+								r=false,
+								f=false,
+								z=false,
+								c=false}
 
 local keyDown = {
 	[keys.h] = function ()
@@ -68,7 +81,7 @@ local keyDown = {
 		transmit("HUSH",nil,DEBUG_THIS_DRONE)
 		print("hush drone: ",DEBUG_THIS_DRONE)
 	end,
-	[keys.r] = function ()
+	[keys.y] = function ()
 		transmit("restart",nil,DEBUG_THIS_DRONE)
 		print("restarted drone: ",DEBUG_THIS_DRONE)
 	end,
@@ -123,6 +136,24 @@ local keyDown = {
 	[keys.leftShift] = function ()
 		movement_key_tracker.leftShift = true
 	end,
+	[keys.q] = function ()
+		movement_key_tracker.q = true
+	end,
+	[keys.e] = function ()
+		movement_key_tracker.e = true
+	end,
+	[keys.r] = function ()
+		movement_key_tracker.r = true
+	end,
+	[keys.f] = function ()
+		movement_key_tracker.f = true
+	end,
+	[keys.z] = function ()
+		movement_key_tracker.z = true
+	end,
+	[keys.c] = function ()
+		movement_key_tracker.c = true
+	end,
 	default = function (key)
 		print(keys.getName(key), "key not bound")
 	end,
@@ -158,6 +189,24 @@ local keyUp = {
 	[keys.leftShift] = function ()
 		movement_key_tracker.leftShift = false
 	end,
+	[keys.q] = function ()
+		movement_key_tracker.q = false
+	end,
+	[keys.e] = function ()
+		movement_key_tracker.e = false
+	end,
+	[keys.r] = function ()
+		movement_key_tracker.r = false
+	end,
+	[keys.f] = function ()
+		movement_key_tracker.f = false
+	end,
+	[keys.z] = function ()
+		movement_key_tracker.z = false
+	end,
+	[keys.c] = function ()
+		movement_key_tracker.c = false
+	end,
 	default = function (key)
 		--print(keys.getName(key), "key not bound")
 	end,
@@ -174,27 +223,41 @@ function keyRelease()
 	end
 end
 
-local moveVector={
-	["w"] = vector.new(0,0,1),
-	["a"] = vector.new(1,0,0),
-	["s"] = vector.new(0,0,-1),
-	["d"] = vector.new(-1,0,0),
+local moveVectorLinear={
+	["a"] = vector.new(0,0,1),
+	["s"] = vector.new(1,0,0),
+	["d"] = vector.new(0,0,-1),
+	["w"] = vector.new(-1,0,0),--the ship is built facing -X
 	["space"] = vector.new(0,1,0),
 	["leftShift"] = vector.new(0,-1,0),
 }
 
+local moveVectorAngular={
+	--yaw
+	["q"] = vector.new(0,1,0),
+	["e"] = vector.new(0,-1,0),
+	--pitch (it's centered on the z axis because the ship is actually built facing -X)
+	["r"] = vector.new(0,0,1),
+	["f"] = vector.new(0,0,-1),
+	--roll
+	["z"] = vector.new(1,0,0),
+	["c"] = vector.new(-1,0,0),
+}
+
+
 function transmitMovement()
 	while true do
-		--print(textutils.serialise(movement_key_tracker))
-		local net_move = vector.new(0,0,0)
+		local net_move = {linear=vector.new(0,0,0), angular=vector.new(0,0,0)}
 		for key,pressed in pairs(movement_key_tracker) do
 			if(pressed) then
-				net_move = net_move + moveVector[key]
+				if(moveVectorLinear[key]) then
+					net_move.linear = net_move.linear + moveVectorLinear[key]
+				elseif(moveVectorAngular[key]) then
+					net_move.angular = net_move.angular + moveVectorAngular[key]
+				end
 			end
 		end
-		
-		net_move = net_move:length()~=0 and net_move:normalize() or vector.new(0,0,0)
-		--print(textutils.serialise(net_move))
+		net_move.linear = net_move.linear:length()~=0 and net_move.linear:normalize() or vector.new(0,0,0)
 		transmitAsRC("move",net_move,DEBUG_THIS_DRONE)
 		sleep(0)
 	end
