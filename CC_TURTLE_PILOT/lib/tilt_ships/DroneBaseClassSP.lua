@@ -81,13 +81,20 @@ function DroneBaseClassSP:initDynamicControllers()
 	-- 												-max_ang_acc[3][1],max_ang_acc[3][1])
 end
 
-function DroneBaseClassSP:calculateDynamicControlValues(rotation_error,position_error)--return rotational-acceletarion and lateral-acceleration in that order
+function DroneBaseClassSP:calculateDynamicControlValueError()
+	return 	{
+				rotation_error=getQuaternionRotationError(self.target_rotation,self.ship_rotation),
+				position_error=getLocalPositionError(self.target_global_position,self.ship_global_position,self.ship_rotation)
+			}
+end
+
+function DroneBaseClassSP:calculateDynamicControlValues(error)--return rotational-acceletarion and lateral-acceleration in that order
 	return 	matrix({
-				{self.rot_x_PID:run(rotation_error.x)},
-				{self.rot_y_PID:run(rotation_error.y)},
-				{self.rot_z_PID:run(rotation_error.z)}
+				{self.rot_x_PID:run(error.rotation_error.x)},
+				{self.rot_y_PID:run(error.rotation_error.y)},
+				{self.rot_z_PID:run(error.rotation_error.z)}
 			}),
-			self.pos_PID:run(position_error)
+			self.pos_PID:run(error.position_error)
 end
 --OVERRIDABLE FUNCTIONS--
 
@@ -314,11 +321,9 @@ function DroneBaseClassSP:calculateMovement()
 		self.ship_global_velocity = self.sensors.shipReader:getVelocity()
 		self.ship_global_velocity = vector.new(self.ship_global_velocity.x,self.ship_global_velocity.y,self.ship_global_velocity.z)
 
-		self.rotation_error = getQuaternionRotationError(self.target_rotation,self.ship_rotation)
-		self.position_error = getLocalPositionError(self.target_global_position,self.ship_global_position,self.ship_rotation)
-		--self:debugProbe({rotation_error=self.rotation_error})
-		local pid_output_angular_acceleration,pid_output_linear_acceleration = self:calculateDynamicControlValues(self.rotation_error,self.position_error)
-		--self:debugProbe({pid_output_angular_acceleration=pid_output_angular_acceleration,rotation_error=self.rotation_error})
+		local error = self:calculateDynamicControlValueError()
+
+		local pid_output_angular_acceleration,pid_output_linear_acceleration = self:calculateDynamicControlValues(error)
 		local net_torque = matrix.mul(self.ship_constants.LOCAL_INERTIA_TENSOR,pid_output_angular_acceleration)
 		
 		local local_gravity_acceleration = self.ship_rotation:inv():rotateVector3(self.gravity_acceleration_vector)

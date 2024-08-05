@@ -116,7 +116,7 @@ function DroneBaseClassKontraption:calculateMovement()
         self.ship_global_velocity = self.sensors.shipReader:getVelocity()
 		self.ship_global_velocity = vector.new(self.ship_global_velocity.x,self.ship_global_velocity.y,self.ship_global_velocity.z)
         --self:debugProbe({ship_global_velocity=self.ship_global_velocity})
-        self.error = self:calculateDynamicControlValueError()
+        local error = self:calculateDynamicControlValueError()
         
         local pid_local_linear_power_percentage = self:calculateDynamicControlValues(self.error)
         
