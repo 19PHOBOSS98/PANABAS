@@ -24,9 +24,9 @@ local instance_configs = {
 				D=0.05,
 			},
 			VEL = {
-				P=0.2,
-				I=0.005,
-				D=0.01,
+				P=0.1,
+				I=0.000,
+				D=0.00,
 			}
 		},
 		ION_THRUSTERS_COUNT = { --number of thrusters pointing in each cardinal direction
