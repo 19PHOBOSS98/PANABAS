@@ -1,3 +1,6 @@
 [submodule "CC_TURTLE_PILOT/lib"]
 	path = CC_TURTLE_PILOT/lib
 	url = https://github.com/19PHOBOSS98/OMNI-DRONE-LUA-LIBRARY.git
+[submodule "CC_TURTLE_PILOT/OMNI-DRONE-LUA-LIBRARY"]
+	path = CC_TURTLE_PILOT/OMNI-DRONE-LUA-LIBRARY
+	url = https://github.com/19PHOBOSS98/OMNI-DRONE-LUA-LIBRARY.git
