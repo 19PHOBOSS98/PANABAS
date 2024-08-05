@@ -109,7 +109,7 @@ function Panabas:overrideShipFrameCustomProtocols()
 		{
 			default = function ( )
 				print(textutils.serialize(command)) 
-				print("customOmniShipProtocols: default case executed")   
+				print("customOmniShipProtocols: default case executed")
 			end,
 		}
 		if case[command] then
@@ -127,16 +127,16 @@ function Panabas:overrideInitDynamicControllers()
 	function self.ShipFrame:initDynamicControllers()
 		if(panabas.blade_mode) then
 			self.lateral_PID = pidcontrollers.PID_Discrete_Vector(	self.ship_constants.PID_SETTINGS.POS.P,
-															self.ship_constants.PID_SETTINGS.POS.I,
-															self.ship_constants.PID_SETTINGS.POS.D,
-															-1,1)
+																	self.ship_constants.PID_SETTINGS.POS.I,
+																	self.ship_constants.PID_SETTINGS.POS.D,
+																	-1,1)
 			return
 		end
 
 		self.lateral_PID = pidcontrollers.PID_Discrete_Vector(	self.ship_constants.PID_SETTINGS.VEL.P,
-															self.ship_constants.PID_SETTINGS.VEL.I,
-															self.ship_constants.PID_SETTINGS.VEL.D,
-															-1,1)
+																self.ship_constants.PID_SETTINGS.VEL.I,
+																self.ship_constants.PID_SETTINGS.VEL.D,
+																-1,1)
 	end
 end
 
@@ -159,7 +159,7 @@ function Panabas:overrideCalculateDynamicControlValues()
 		return 	self.lateral_PID:run(error)
 	end
 end
-
+Panabas.global_velocity_offset = vector.new(0,0,0)
 function Panabas:overrideShipFrameCustomFlightLoopBehavior()
 	local panabas = self
 	function self.ShipFrame:customFlightLoopBehavior(customFlightVariables)
@@ -167,17 +167,12 @@ function Panabas:overrideShipFrameCustomFlightLoopBehavior()
 		useful variables to work with:
 			self.target_global_position
 			self.target_rotation
-			self.rotation_error
-			self.position_error
+			self.target_global_velocity
+			self.error
 		]]--
 
 		if (self.remoteControlManager.rc_variables.run_mode) then
-			--local target_aim = self.sensors.aimTargeting:getTargetSpatials()
 			local target_orbit = self.sensors.orbitTargeting:getTargetSpatials()
-			
-			-- local target_aim_position = target_aim.position
-			-- local target_aim_velocity = target_aim.velocity
-			-- local target_aim_orientation = target_aim.orientation
 			
 			local target_orbit_position = target_orbit.position
 			local target_orbit_orientation = target_orbit.orientation
@@ -190,11 +185,12 @@ function Panabas:overrideShipFrameCustomFlightLoopBehavior()
 			--self:debugProbe({formation_position=formation_position})
 			self.target_global_position = formation_position:add(target_orbit_position)
 			
-			self.target_global_velocity = vector.new(-10,0,0)--TEMP
+			self.target_global_velocity = vector.new(0,0,0) + panabas.global_velocity_offset
 		else
 			self.target_global_velocity = vector.new(0,0,0)
 			self.target_rotation = quaternion.new(1,0,0,0)
 		end
+		panabas.global_velocity_offset = vector.new(0,0,0)
 		self:debugProbe({ship_global_velocity=self.ship_global_velocity})
 	end
 end
