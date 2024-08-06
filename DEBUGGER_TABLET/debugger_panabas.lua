@@ -30,7 +30,7 @@ local DRONE_IDs = {
 	}
 
 local ORBIT_FORMATION = {
-	vector.new(-20,10,45),
+	vector.new(-20,5,55),
 
 }
 
