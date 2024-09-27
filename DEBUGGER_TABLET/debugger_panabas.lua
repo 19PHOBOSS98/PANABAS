@@ -23,22 +23,23 @@ local DRONE_TO_REMOTE_CHANNEL = 8
 modem.open(DRONE_TO_DEBUG_CHANNEL)
 modem.open(DRONE_TO_REMOTE_CHANNEL)
 
-local DEBUG_THIS_DRONE = "297"
+local DEBUG_THIS_DRONE = "4"
 
 local DRONE_IDs = {
-	"297"
+	"4"
 	}
 
 local ORBIT_FORMATION = {
-	vector.new(-20,5,55),
+	vector.new(-30,5,55),
 
 }
 
 function initDrones()
 	for i,id in ipairs(DRONE_IDs) do
 		transmit("orbit_offset",ORBIT_FORMATION[i],id)
+		transmit("activate_defense_system",nil,id)
 	end
-	print("initialized Hounds")
+	print("initialized Panabas")
 end
 
 
@@ -79,13 +80,17 @@ local keyDown = {
 	[keys.h] = function ()
 		transmit("hush",nil,DEBUG_THIS_DRONE)
 		transmit("HUSH",nil,DEBUG_THIS_DRONE)
+		transmit("deactivate_defense_system",nil,DEBUG_THIS_DRONE)
 		print("hush drone: ",DEBUG_THIS_DRONE)
 	end,
 	[keys.y] = function ()
 		transmit("restart",nil,DEBUG_THIS_DRONE)
 		print("restarted drone: ",DEBUG_THIS_DRONE)
 	end,
-	[keys.t] = function ()
+	[keys.i] = function ()
+		initDrones()
+	end,
+	[keys.k] = function ()
 		for i,id in ipairs(DRONE_IDs) do 
 			transmit("restart",nil,id)
 			print("restarted drone: ",id)
@@ -93,9 +98,19 @@ local keyDown = {
 		os.sleep(1)
 		initDrones()
 	end,
-	[keys.i] = function ()
-		initDrones()
+	[keys.o] = function ()
+		for i,id in ipairs(DRONE_IDs) do
+			transmit("deactivate_defense_system",nil,id)
+		end
+		print("defense_systems: deactivated")
 	end,
+	[keys.l] = function ()
+		for i,id in ipairs(DRONE_IDs) do
+			transmit("activate_defense_system",nil,id)
+		end
+		print("defense_systems: activated")
+	end,
+	
 	[keys.p] = function ()
 		transmit("run_mode",toggle_run_mode,DEBUG_THIS_DRONE)
 		print("run_mode: ",toggle_run_mode," ",DEBUG_THIS_DRONE)
@@ -107,16 +122,15 @@ local keyDown = {
 	end,
 	[keys.g] = function ()
 		print("toggling axe_mode")
-		--transmitAsRC("get_settings_info",nil,DEBUG_THIS_DRONE)
 		transmitAsRC("axe_mode",nil,DEBUG_THIS_DRONE)
 	end,
-	[keys.o] = function ()
-		print("transmittingAsRC")
-		transmitAsRC("get_settings_info",nil,DEBUG_THIS_DRONE)
-	end,
-	[keys.l] = function (arguments)
-		os.reboot()
-	end,
+	-- [keys.o] = function ()
+	-- 	print("transmittingAsRC")
+	-- 	transmitAsRC("get_settings_info",nil,DEBUG_THIS_DRONE)
+	-- end,
+	-- [keys.l] = function (arguments)
+	-- 	os.reboot()
+	-- end,
 	
 	[keys.w] = function ()
 		movement_key_tracker.w = true

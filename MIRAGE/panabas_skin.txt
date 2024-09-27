@@ -1,0 +1,4 @@
+activeLow:true,
+files:[panabas_009],
+move:[0,-16,-2],
+pMove:[-9,0,0]

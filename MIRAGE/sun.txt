@@ -1,0 +1,6 @@
+activeLow:true,
+files:[sun],
+move:[9,-20,-5],
+pSpinAxis:[1,0,1],
+pSpinPivot:[14.5,-14.5,0.5],
+pSpinSpeed:180
