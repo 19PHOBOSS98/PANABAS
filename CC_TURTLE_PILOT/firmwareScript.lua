@@ -1,11 +1,4 @@
-local DroneBaseClassKontraption = require "lib.tilt_ships.DroneBaseClassKontraption"
-local HoundTurretBase = require "lib.tilt_ships.HoundTurretBase"
 local Panabas = require "lib.tilt_ships.Panabas"
-
-local Path = require "lib.paths.Path"
-local path_utilities = require "lib.path_utilities"
-local quaternion = require "lib.quaternions"
-local JSON = require "lib.JSON"
 
 local instance_configs = {
 	radar_config = {
@@ -16,23 +9,6 @@ local instance_configs = {
 	},
 	ship_constants_config = {
 		DRONE_ID = ship.getId(),
-		PID_SETTINGS=
-		{
-			POS = {
-				P=0.04,
-				I=0.001,
-				D=0.05,
-			},
-			VEL = {
-				P=0.1,
-				I=0.000,
-				D=0.00,
-			}
-		},
-		ION_THRUSTERS_COUNT = { --number of thrusters pointing in each cardinal direction
-        	pos=vector.new(70,70,70), 	-- +X, +Y, +Z
-        	neg=vector.new(70,70,70)	-- -X, -Y, -Z
-    	}
 	},
 	channels_config = {
 		DEBUG_TO_DRONE_CHANNEL = 9,
