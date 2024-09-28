@@ -10,6 +10,7 @@ local MAX_SPELL_RANGE = 32
 
 local FILTER_PUSH_ONLY = {-- true to keep in scan; false to remove from scan. Is false by default if not in list
     ["PHO"]=false,
+    ["username_here"]=false,
     ["Seat"]=false,
     ["entity.vs_clockwork.sequenced_seat"]=false,
     ["entity.valkyrienskies.ship_mounting_entity"]=false,
@@ -51,6 +52,7 @@ end
 
 local FILTER_BURN_AND_PUSH = {-- true to keep in scan; false to remove from scan. Is true by default if not in list
     ["PHO"]=false,
+    ["username_here"]=false,
     ["Seat"]=false,
     ["entity.vs_clockwork.sequenced_seat"]=false,
     ["entity.valkyrienskies.ship_mounting_entity"]=false,
@@ -108,6 +110,7 @@ function pulseArmorRegen()
     redstone.setOutput("left",true)
     sleep(0.1)
     redstone.setOutput("left",false)
+    sleep(0.1)
 end
 
 local FULL_MASS = 0
