@@ -143,8 +143,13 @@ end
 
 
 
-local CENTER_OFFSET = vector.new(23,6,0)
 local position = ship.getShipyardPosition()
+--[[
+local DEFENDER_TURTLE_SHIPYARD_POSITION = vector.new(-28649431,85,12290066) -- found on specific ship
+print(textutils.serialise(vector.new(position.x,position.y,position.z)))
+print(textutils.serialise(vector.new(position.x,position.y,position.z) - DEFENDER_TURTLE_SHIPYARD_POSITION))
+]]--
+local CENTER_OFFSET = vector.new(-3.8482,4.2874,0.5032)
 position = vector.new(position.x,position.y,position.z) + CENTER_OFFSET
 
 local run_firmware = true
