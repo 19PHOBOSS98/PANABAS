@@ -144,12 +144,12 @@ end
 
 
 local position = ship.getShipyardPosition()
---[[
-local DEFENDER_TURTLE_SHIPYARD_POSITION = vector.new(-28649431,85,12290066) -- found on specific ship
-print(textutils.serialise(vector.new(position.x,position.y,position.z)))
-print(textutils.serialise(vector.new(position.x,position.y,position.z) - DEFENDER_TURTLE_SHIPYARD_POSITION))
-]]--
-local CENTER_OFFSET = vector.new(-3.8482,4.2874,0.5032)
+
+--local DEFENDER_TURTLE_SHIPYARD_POSITION = vector.new(-28616663,85,12290066) -- found on specific ship
+--print(textutils.serialise(vector.new(position.x,position.y,position.z)))
+--print(textutils.serialise(vector.new(position.x,position.y,position.z) - DEFENDER_TURTLE_SHIPYARD_POSITION))
+
+local CENTER_OFFSET = vector.new(-4.8892,2.2888,0.4999)
 position = vector.new(position.x,position.y,position.z) + CENTER_OFFSET
 
 local run_firmware = true
@@ -185,7 +185,7 @@ function defend()
             end
             
             if(#scan_burn_and_push>0) then
-                --print(textutils.serialise(scan_burn_and_push))
+                print(textutils.serialise(scan_burn_and_push))
                 wand.clearStack()
                 wand.pushStack(Hex:repelandFireballEntityIota(repel_center,10,2))
                 wand.pushStack(scan_burn_and_push)
