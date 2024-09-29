@@ -23,14 +23,14 @@ local DRONE_TO_REMOTE_CHANNEL = 8
 modem.open(DRONE_TO_DEBUG_CHANNEL)
 modem.open(DRONE_TO_REMOTE_CHANNEL)
 
-local DEBUG_THIS_DRONE = "13"
+local DEBUG_THIS_DRONE = "45"
 
 local DRONE_IDs = {
-	"13"
+	"45"
 	}
 
 local ORBIT_FORMATION = {
-	vector.new(-30,5,55),
+	vector.new(-30,5,80),
 
 }
 
