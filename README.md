@@ -1,10 +1,10 @@
 # PANABAS
- 
-spawn base regen
 
 spawn chassis
 
 sit on chassis' shipController for the first time to init gyro blocks
+
+spawn base regen
 
 entangle FE power
 
