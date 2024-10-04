@@ -42,13 +42,15 @@ entangle void shield materials
 
 entangle void shield AN source jars
 
-link source jars in regen base
-
 link media to turtles
+
+link source jars in regen base
 
 activate turtle pilot
 
 activate turtle defense
+
+
 
 
 
