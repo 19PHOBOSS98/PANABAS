@@ -36,20 +36,21 @@ set droneID in debugger tablet
 
 refresh RS transmitters on chassis (safety switch and void shield switch)
 
-
 initialize RF shields with wrench
-
-entangle void shield AN source jars
 
 entangle void shield materials
 
-link source jars in regen base
+entangle void shield AN source jars
 
 link media to turtles
+
+link source jars in regen base
 
 activate turtle pilot
 
 activate turtle defense
+
+
 
 
 
